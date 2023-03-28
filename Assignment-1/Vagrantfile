@@ -1,0 +1,22 @@
+## Assignment 1
+
+# Create a Vagrantfile that provisions a VM with Apache installed and runs a simple Apache web page.
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/focal64"
+  config.vm.provider "apache" do |apache|
+    apache.memory = "2048"
+    apache.cpus = "2"
+    apache.disksize.size = "40GB"
+    end
+
+  config.vm.provision "file", source: "index.html", destination: "/tmp/index.html"
+
+  config.vm.provision "shell", inline: <<-SHELL 
+    sudo apt-get update
+    sudo apt-get install -y apache2
+    sudo cp /tmp/index.html /var/www/html/
+  SHELL
+  
+  #Forward port 80 to 8080
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+end
