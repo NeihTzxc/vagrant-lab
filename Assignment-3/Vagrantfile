@@ -1,0 +1,21 @@
+## Assignment 3
+
+# Create a Vagrantfile that provisions a VM with MySQL installed and creates a database and a user.
+Vagrant.configure("2") do |config| 
+    config.vm.box = "ubuntu/focal64"
+    config.vm.provider "mysql" do |mysql| 
+        mysql.memory = "1024"
+        mysql.cpus = "1"
+        mysql.disksize.size = "20GB"
+    end
+    config.vm.provision "shell", inline: <<-SHELL 
+        sudo apt-get update
+        sudo apt-get install -y mysql-server
+        mysql -u root -e "CREATE DATABASE mydb;"
+        mysql -u root -e "CREATE USER 'myuser'@'localhost' IDENTIFIED BY 'mypassword';"
+        mysql -u root -e "GRANT ALL PRIVILEGES ON mydb.* TO 'myuser'@'localhost';"
+        mysql -u root -e "FLUSH PRIVILEGES;"
+    SHELL
+    # Forward port 3306 to 3306
+    config.vm.network "forwarded_port", guest: 3306, host:3306
+end
