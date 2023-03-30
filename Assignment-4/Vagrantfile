@@ -1,0 +1,16 @@
+## Assignment 4
+
+# Create a Vagrantfile that provisions a VM with MongoDB installed and creates a database and a user.
+Vagrant.configure("2") do |config| 
+    config.vm.box = "ubuntu/focal64"
+    config.vm.define "MongoDB"
+    config.vm.hostname = "ubuntu-mongo"
+    config.vm.provision "shell", path: "mongo-init.sh"
+    config.vm.provider "mongo" do |mongo| 
+        mongo.gui = true
+        mongo.memory = "4096"
+        mongo.cpus = "4"
+        mongo.disksize.size = "40GB"
+    end
+    
+end

@@ -1,0 +1,17 @@
+## Assignment 6
+
+# Create a Vagrantfile that provisions a VM with Python installed and runs a script.
+Vagrant.configure("2") do |config| 
+    config.vm.box = "ubuntu/focal64"
+    config.vm.provider "python" do |python| 
+        python.memory = "2048",
+        python.cpus = "2"
+        python.disksize.size = "40GB"
+    end
+    config.vm.provision "file", source: "index.py", destination: "/tmp/index.py"
+    config.vm.provision "shell", inline: <<-SHELL 
+        sudo apt-get update
+        sudo apt-get install -y python3
+        python3 /tmp/index.py
+    SHELL
+end

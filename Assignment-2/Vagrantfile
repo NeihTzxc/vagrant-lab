@@ -2,18 +2,22 @@
 
 # Create a Vagrantfile that provisions a VM with Nginx installed and runs a simple Nginx web page.
 Vagrant.configure("2") do |config|
-    config.vm.box = "ubuntu/focal64"
+    config.vm.box = "ubuntu/jammy64"
+    config.vm.hostname = "ubuntu-slave"
     config.vm.provider "nginx" do |nginx| 
-        nginx.memory = "1024"
-        nginx.cpus = "1"
-        nginx.disksize.size = "20GB"
+        nginx.memory = "2048"
+        nginx.cpus = "2"
+        nginx.disksize.size = "40GB"
     end
     config.vm.provision "file", source: "index.html", destination: "/tmp/index.html"
     config.vm.provision "shell", inline: <<-SHELL
         sudo apt-get update
         sudo apt-get install -y nginx
+        sudo systemctl enable nginx
+        sudo systemctl start nginx
         sudo cp /tmp/index.html /var/www/html
     SHELL
     # Forward port 80 to 8081
     config.vm.network "forwarded_port", guest: 80, host: 8081
+    
 end

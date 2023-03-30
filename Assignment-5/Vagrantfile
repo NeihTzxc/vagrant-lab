@@ -1,0 +1,15 @@
+## Assignment 5
+
+# Create a Vagrantfile that provisions a VM with Node.js installed and runs a script.
+Vagrant.configure("2") do |config| 
+    config.vm.box = "ubuntu/jammy64"
+    config.vm.hostname = "ubuntu-node"
+    config.vm.provider "node" do |node| 
+        node.gui = true
+        node.memory = "2048"
+        node.cpus = "2"
+        node.disksize.size = "40GB"
+    end
+    config.vm.provision "file", source: "index.js", destination: "/tmp/index.js"
+    config.vm.provision "shell", path: "node-init.sh"
+end
