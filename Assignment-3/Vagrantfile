@@ -3,10 +3,10 @@
 # Create a Vagrantfile that provisions a VM with MySQL installed and creates a database and a user.
 Vagrant.configure("2") do |config| 
     config.vm.box = "ubuntu/focal64"
-    config.vm.provider "mysql" do |mysql| 
-        mysql.memory = "1024"
-        mysql.cpus = "1"
-        mysql.disksize.size = "20GB"
+    config.vm.provider "virtualbox" do |vb| 
+        vb.memory = "1024"
+        vb.cpus = "1"
+        vb.disksize.size = "20GB"
     end
     config.vm.provision "shell", inline: <<-SHELL 
         sudo apt-get update

@@ -6,11 +6,10 @@ Vagrant.configure("2") do |config|
     config.vm.define "MongoDB"
     config.vm.hostname = "ubuntu-mongo"
     config.vm.provision "shell", path: "mongo-init.sh"
-    config.vm.provider "mongo" do |mongo| 
-        mongo.gui = true
-        mongo.memory = "4096"
-        mongo.cpus = "4"
-        mongo.disksize.size = "40GB"
+    config.vm.provider "virtualbox" do |vb| 
+        vb.memory = "4096"
+        vb.cpus = "4"
+        vb.disksize.size = "40GB"
     end
     
 end
