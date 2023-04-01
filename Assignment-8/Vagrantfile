@@ -1,0 +1,17 @@
+## Assignment 8
+
+# Create a Vagrantfile that provisions a VM with Git installed and clones a repository.
+
+Vagrant.configure("2") do |config| 
+    config.vm.box = "ubuntu/focal64"
+    config.vm.provider "virtualbox" do |vb| 
+        vb.memory = "2048"
+        vb.cpus = "2"
+    end
+    config.vm.provision "shell", inline: <<-SHELL 
+        sudo apt update
+        sudo apt install git
+        cd /tmp
+        git clone https://github.com/NeihTzxc/lunar-new-year.git
+    SHELL
+end
